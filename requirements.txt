@@ -26,7 +26,7 @@ matplotlib == 3.4.2
 # PySODEvalToolkit/untracked/plot_sota_cmp.py: 4
 # PySODEvalToolkit/utils/misc.py: 5
 # PySODEvalToolkit/utils/recorders/metric_recorder.py: 6
-numpy == 1.19.2
+numpy == 1.22.0
 
 # PySODEvalToolkit/untracked/collect_results.py: 7
 # PySODEvalToolkit/untracked/plot_sota_cmp.py: 3
@@ -48,4 +48,4 @@ tabulate == 0.8.9
 # PySODEvalToolkit/metrics/cal_sod_matrics.py: 9
 # PySODEvalToolkit/untracked/collect_results.py: 10
 # PySODEvalToolkit/untracked/find_bad_prediction.py: 5
-tqdm == 4.59.0
+tqdm == 4.66.3
