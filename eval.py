@@ -64,15 +64,31 @@ def get_args():
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("--dataset-json", required=True, type=str, help="Json file for datasets.")
     parser.add_argument(
-        "--method-json", required=True, nargs="+", type=str, help="Json file for methods."
+        "--dataset-json", required=True, type=str, help="Json file for datasets."
     )
-    parser.add_argument("--metric-npy", type=str, help="Npy file for saving metric results.")
-    parser.add_argument("--curves-npy", type=str, help="Npy file for saving curve results.")
-    parser.add_argument("--record-txt", type=str, help="Txt file for saving metric results.")
-    parser.add_argument("--to-overwrite", action="store_true", help="To overwrite the txt file.")
-    parser.add_argument("--record-xlsx", type=str, help="Xlsx file for saving metric results.")
+    parser.add_argument(
+        "--method-json",
+        required=True,
+        nargs="+",
+        type=str,
+        help="Json file for methods.",
+    )
+    parser.add_argument(
+        "--metric-npy", type=str, help="Npy file for saving metric results."
+    )
+    parser.add_argument(
+        "--curves-npy", type=str, help="Npy file for saving curve results."
+    )
+    parser.add_argument(
+        "--record-txt", type=str, help="Txt file for saving metric results."
+    )
+    parser.add_argument(
+        "--to-overwrite", action="store_true", help="To overwrite the txt file."
+    )
+    parser.add_argument(
+        "--record-xlsx", type=str, help="Xlsx file for saving metric results."
+    )
     parser.add_argument(
         "--include-methods",
         type=str,

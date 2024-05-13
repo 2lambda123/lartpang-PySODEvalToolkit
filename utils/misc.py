@@ -159,7 +159,9 @@ def get_list_with_suffix(dataset_path: str, suffix: str):
     else:
         print(f" ++>> {dataset_path} is a folder. <<++ ")
         name_list = [
-            os.path.splitext(f)[0] for f in os.listdir(dataset_path) if f.endswith(suffix)
+            os.path.splitext(f)[0]
+            for f in os.listdir(dataset_path)
+            if f.endswith(suffix)
         ]
     name_list = list(set(name_list))
     return name_list
@@ -202,9 +204,9 @@ def get_gt_pre_with_name(
     gt = imread_with_checking(gt_path, for_color=False)
 
     if pre.shape != gt.shape:
-        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR).astype(
-            np.uint8
-        )
+        pre = cv2.resize(
+            pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR
+        ).astype(np.uint8)
 
     if to_normalize:
         gt = normalize_array(gt, to_binary=True, max_eq_255=True)
@@ -241,7 +243,9 @@ def get_gt_pre_with_name_and_group(
     gt = imread_with_checking(gt_path, for_color=False)
 
     if pre.shape != gt.shape:
-        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=interpolation).astype(np.uint8)
+        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=interpolation).astype(
+            np.uint8
+        )
 
     if to_normalize:
         gt = normalize_array(gt, to_binary=True, max_eq_255=True)

@@ -43,7 +43,9 @@ class Recorder:
             self.txt_recorder = TxtRecorder(
                 txt_path=txt_path,
                 to_append=to_append,
-                max_method_name_width=max([len(x) for x in method_names]),  # 显示完整名字
+                max_method_name_width=max(
+                    [len(x) for x in method_names]
+                ),  # 显示完整名字
             )
 
         self.excel_recorder = None
@@ -94,10 +96,14 @@ class Recorder:
 
                 if self.txt_recorder:
                     self.txt_recorder.add_row(row_name="Dataset", row_data=dataset_name)
-                    self.txt_recorder(method_results=method_results, method_name=method_name)
+                    self.txt_recorder(
+                        method_results=method_results, method_name=method_name
+                    )
                 if self.excel_recorder:
                     self.excel_recorder(
-                        row_data=method_results, dataset_name=dataset_name, method_name=method_name
+                        row_data=method_results,
+                        dataset_name=dataset_name,
+                        method_name=method_name,
                     )
 
 
@@ -223,7 +229,9 @@ def cal_metrics(
                 metric_class=metric_class,
                 desc=desc,
             )
-            callback = partial(recorder.record, dataset_name=dataset_name, method_name=method_name)
+            callback = partial(
+                recorder.record, dataset_name=dataset_name, method_name=method_name
+            )
             procs.apply_async(func=evaluate, kwds=kwargs, callback=callback)
             # print(" -------------------- [DEBUG] -------------------- ")
             # callback(evaluate(**kwargs), dataset_name=dataset_name, method_name=method_name)
@@ -239,11 +247,15 @@ def cal_metrics(
         make_dir(os.path.dirname(metrics_npy_path))
         np.save(metrics_npy_path, recorder.metrics)
         tqdm.write(f"All metrics has been saved in {metrics_npy_path}")
-    formatted_string = formatter_for_tabulate(recorder.metrics, method_names, dataset_names)
+    formatted_string = formatter_for_tabulate(
+        recorder.metrics, method_names, dataset_names
+    )
     tqdm.write(f"All methods have been evaluated:\n{formatted_string}")
 
 
-def evaluate(names, num_bits, pre_info_pair, gt_info_pair, metric_class, metric_names, desc=""):
+def evaluate(
+    names, num_bits, pre_info_pair, gt_info_pair, metric_class, metric_names, desc=""
+):
     metric_recoder = metric_class(metric_names=metric_names)
     # https://github.com/tqdm/tqdm#parameters
     # https://github.com/tqdm/tqdm/blob/master/examples/parallel_bars.py

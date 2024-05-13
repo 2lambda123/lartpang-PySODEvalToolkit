@@ -47,7 +47,9 @@ def get_args():
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("--alias-yaml", type=str, help="Yaml file for datasets and methods alias.")
+    parser.add_argument(
+        "--alias-yaml", type=str, help="Yaml file for datasets and methods alias."
+    )
     parser.add_argument(
         "--style-cfg",
         type=str,
@@ -62,13 +64,22 @@ def get_args():
         help="Npy file for saving curve results.",
     )
     parser.add_argument(
-        "--our-methods", type=str, nargs="+", help="Names of our methods for highlighting it."
+        "--our-methods",
+        type=str,
+        nargs="+",
+        help="Names of our methods for highlighting it.",
     )
     parser.add_argument(
-        "--num-rows", type=int, default=1, help="Number of rows for subplots. Default: 1"
+        "--num-rows",
+        type=int,
+        default=1,
+        help="Number of rows for subplots. Default: 1",
     )
     parser.add_argument(
-        "--num-col-legend", type=int, default=1, help="Number of columns in the legend. Default: 1"
+        "--num-col-legend",
+        type=int,
+        default=1,
+        help="Number of columns in the legend. Default: 1",
     )
     parser.add_argument(
         "--mode",
