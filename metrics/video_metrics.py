@@ -46,7 +46,9 @@ class Recorder:
             self.txt_recorder = TxtRecorder(
                 txt_path=txt_path,
                 to_append=to_append,
-                max_method_name_width=max([len(x) for x in method_names]),  # 显示完整名字
+                max_method_name_width=max(
+                    [len(x) for x in method_names]
+                ),  # 显示完整名字
             )
 
         self.excel_recorder = None
@@ -97,10 +99,14 @@ class Recorder:
 
                 if self.txt_recorder:
                     self.txt_recorder.add_row(row_name="Dataset", row_data=dataset_name)
-                    self.txt_recorder(method_results=method_results, method_name=method_name)
+                    self.txt_recorder(
+                        method_results=method_results, method_name=method_name
+                    )
                 if self.excel_recorder:
                     self.excel_recorder(
-                        row_data=method_results, dataset_name=dataset_name, method_name=method_name
+                        row_data=method_results,
+                        dataset_name=dataset_name,
+                        method_name=method_name,
                     )
 
 
@@ -115,7 +121,16 @@ def cal_metrics(
     metrics_npy_path: str = "./metrics.npy",
     num_bits: int = 3,
     num_workers: int = 2,
-    metric_names: tuple = ("sm", "wfm", "mae", "avgdice", "avgiou", "adpe", "avge", "maxe"),
+    metric_names: tuple = (
+        "sm",
+        "wfm",
+        "mae",
+        "avgdice",
+        "avgiou",
+        "adpe",
+        "avge",
+        "maxe",
+    ),
     return_group: bool = False,
     start_idx: int = 1,
     end_idx: int = -1,
@@ -170,8 +185,9 @@ def cal_metrics(
     )
 
     tqdm.set_lock(TRLock())
-    procs = pool.ThreadPool(processes=num_workers, initializer=tqdm.set_lock,
-                            initargs=(tqdm.get_lock(),))
+    procs = pool.ThreadPool(
+        processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)
+    )
     print(f"Create a {procs}).")
     name_sep = "<sep>"
 
@@ -185,7 +201,10 @@ def cal_metrics(
         gt_index_file = dataset_path.get("index_file")
         if gt_index_file:
             gt_name_list = get_name_with_group_list(
-                data_path=gt_index_file, name_prefix=gt_prefix, name_suffix=gt_suffix, sep=name_sep
+                data_path=gt_index_file,
+                name_prefix=gt_prefix,
+                name_suffix=gt_suffix,
+                sep=name_sep,
             )
         else:
             gt_name_list = get_name_with_group_list(
@@ -212,7 +231,10 @@ def cal_metrics(
             pre_suffix = method_dataset_info["suffix"]
             pre_root = method_dataset_info["path"]
             pre_name_list = get_name_with_group_list(
-                data_path=pre_root, name_prefix=pre_prefix, name_suffix=pre_suffix, sep=name_sep
+                data_path=pre_root,
+                name_prefix=pre_prefix,
+                name_suffix=pre_suffix,
+                sep=name_sep,
             )
             pre_info_pair = (pre_root, pre_prefix, pre_suffix)
 
@@ -234,7 +256,9 @@ def cal_metrics(
                 sep=name_sep,
                 desc=desc,
             )
-            callback = partial(recorder.record, dataset_name=dataset_name, method_name=method_name)
+            callback = partial(
+                recorder.record, dataset_name=dataset_name, method_name=method_name
+            )
             procs.apply_async(func=evaluate, kwds=kwargs, callback=callback)
             # print(" -------------------- [DEBUG] -------------------- ")
             # callback(evaluate(**kwargs), dataset_name=dataset_name, method_name=method_name)
@@ -250,7 +274,9 @@ def cal_metrics(
         make_dir(os.path.dirname(metrics_npy_path))
         np.save(metrics_npy_path, recorder.metrics)
         tqdm.write(f"All metrics has been saved in {metrics_npy_path}")
-    formatted_string = formatter_for_tabulate(recorder.metrics, method_names, dataset_names)
+    formatted_string = formatter_for_tabulate(
+        recorder.metrics, method_names, dataset_names
+    )
     tqdm.write(f"All methods have been evaluated:\n{formatted_string}")
 
 
@@ -284,7 +310,10 @@ def evaluate(
             sep=sep,
         )
         metric_recoder.step(
-            group_name=group_name, pre=pre, gt=gt, gt_path=os.path.join(gt_info_pair[0], name)
+            group_name=group_name,
+            pre=pre,
+            gt=gt,
+            gt_path=os.path.join(gt_info_pair[0], name),
         )
 
     # TODO: 打印的形式有待进一步完善

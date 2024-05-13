@@ -44,7 +44,12 @@ class _BaseExcelRecorder(object):
         sheet.append(row_data)
 
     def insert_row(self, sheet: Worksheet, row_data, row_id, min_col=1, interval=0):
-        assert isinstance(row_id, int) and isinstance(min_col, int) and row_id > 0 and min_col > 0
+        assert (
+            isinstance(row_id, int)
+            and isinstance(min_col, int)
+            and row_id > 0
+            and min_col > 0
+        )
         assert isinstance(row_data, (tuple, list)), row_data
 
         num_elements = len(row_data)
@@ -63,9 +68,7 @@ class _BaseExcelRecorder(object):
     def merge_region(sheet: Worksheet, min_row, max_row, min_col, max_col):
         assert max_row >= min_row > 0 and max_col >= min_col > 0
 
-        merged_region = (
-            f"{get_column_letter(min_col)}{min_row}:{get_column_letter(max_col)}{max_row}"
-        )
+        merged_region = f"{get_column_letter(min_col)}{min_row}:{get_column_letter(max_col)}{max_row}"
         sheet.merge_cells(merged_region)
 
     @staticmethod
@@ -166,7 +169,8 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         if dataset_names is None:
             dataset_names = ["pascals", "ecssd", "hkuis", "dutste", "dutomron"]
         self.dataset_names = [
-            self.format_string_with_config(s, self.repalce_config) for s in dataset_names
+            self.format_string_with_config(s, self.repalce_config)
+            for s in dataset_names
         ]
         if metric_names is None:
             metric_names = [
@@ -195,7 +199,11 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         # 合并row_header的单元格
         for col_id in range(len(self.row_header)):
             self.merge_region(
-                sheet=sheet, min_row=1, max_row=2, min_col=col_id + 1, max_col=col_id + 1
+                sheet=sheet,
+                min_row=1,
+                max_row=2,
+                min_col=col_id + 1,
+                max_col=col_id + 1,
             )
 
         # 插入数据集信息
@@ -220,7 +228,8 @@ class MetricExcelRecorder(_BaseExcelRecorder):
 
     def _format_row_data(self, row_data: dict) -> list:
         row_data = {
-            self.format_string_with_config(k, self.repalce_config): v for k, v in row_data.items()
+            self.format_string_with_config(k, self.repalce_config): v
+            for k, v in row_data.items()
         }
         return [row_data[n] for n in self.metric_names]
 
@@ -245,7 +254,10 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         # 4 格式化指标数据部分为合理的格式，并插入表中
         row_data = self._format_row_data(row_data=row_data)
         self.insert_row(
-            sheet=sheet, row_data=row_data, row_id=method_row_id, min_col=dataset_col_start_id
+            sheet=sheet,
+            row_data=row_data,
+            row_id=method_row_id,
+            min_col=dataset_col_start_id,
         )
         # 4 写入新表
         wb.save(self.xlsx_path)
