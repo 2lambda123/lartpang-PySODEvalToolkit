@@ -29,12 +29,12 @@ def get_name_list_and_suffix(data_path: str) -> tuple:
     if os.path.isfile(data_path):
         print(f" ++>> {data_path} is a file. <<++ ")
         with open(data_path, mode="r", encoding="utf-8") as file:
-            line = file.readline()
+            line = file.readline(5_000_000)
             while line:
                 img_name = os.path.basename(line.split()[0])
                 file_ext = os.path.splitext(img_name)[1]
                 name_list.append(os.path.splitext(img_name)[0])
-                line = file.readline()
+                line = file.readline(5_000_000)
         if file_ext == "":
             # 默认为png
             file_ext = ".png"
@@ -52,10 +52,10 @@ def get_name_list(data_path: str, name_prefix: str = "", name_suffix: str = "") 
         assert data_path.endswith((".txt", ".lst"))
         data_list = []
         with open(data_path, encoding="utf-8", mode="r") as f:
-            line = f.readline().strip()
+            line = f.readline(5_000_000).strip()
             while line:
                 data_list.append(line)
-                line = f.readline().strip()
+                line = f.readline(5_000_000).strip()
     else:
         data_list = os.listdir(data_path)
 
@@ -151,11 +151,11 @@ def get_list_with_suffix(dataset_path: str, suffix: str):
     if os.path.isfile(dataset_path):
         print(f" ++>> {dataset_path} is a file. <<++ ")
         with open(dataset_path, mode="r", encoding="utf-8") as file:
-            line = file.readline()
+            line = file.readline(5_000_000)
             while line:
                 img_name = os.path.basename(line.split()[0])
                 name_list.append(os.path.splitext(img_name)[0])
-                line = file.readline()
+                line = file.readline(5_000_000)
     else:
         print(f" ++>> {dataset_path} is a folder. <<++ ")
         name_list = [
