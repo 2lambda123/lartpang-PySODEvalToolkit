@@ -12,7 +12,9 @@ _COLOR_Genarator = iter(
         [
             color
             for name, color in colors.cnames.items()
-            if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
+            if name not in ["red", "white"]
+            or not name.startswith("light")
+            or "gray" in name
         ]
     )
 )
@@ -54,14 +56,20 @@ def simple_info_generator():
     return _template_generator
 
 
-def get_valid_elements(source: list, include_elements: list, exclude_elements: list) -> list:
+def get_valid_elements(
+    source: list, include_elements: list, exclude_elements: list
+) -> list:
     targeted_elements = []
-    if include_elements and not exclude_elements:  # only include_elements is not [] and not None
+    if (
+        include_elements and not exclude_elements
+    ):  # only include_elements is not [] and not None
         for element in include_elements:
             assert element in source, element
             targeted_elements.append(element)
 
-    elif not include_elements and exclude_elements:  # only exclude_elements is not [] and not None
+    elif (
+        not include_elements and exclude_elements
+    ):  # only exclude_elements is not [] and not None
         for element in exclude_elements:
             assert element in source, element
         for element in source:
@@ -133,7 +141,9 @@ def get_methods_info(
         method_path = methods_info[method_name]
 
         if for_drawing and our_name and our_name == method_name:
-            method_info = info_generator(method_path, method_name, line_color="red", line_width=3)
+            method_info = info_generator(
+                method_path, method_name, line_color="red", line_width=3
+            )
         else:
             method_info = info_generator(method_path, method_name)
         methods_full_info.append((method_name, method_info))

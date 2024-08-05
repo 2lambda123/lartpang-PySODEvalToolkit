@@ -41,7 +41,9 @@ class CurveDrawer(object):
         self.sharey = sharey
 
         fig, axes = plt.subplots(
-            nrows=row_num, ncols=math.ceil(self.num_subplots / row_num), sharey=self.sharey
+            nrows=row_num,
+            ncols=math.ceil(self.num_subplots / row_num),
+            sharey=self.sharey,
         )
         self.fig = fig
         self.axes = axes
@@ -113,16 +115,26 @@ class CurveDrawer(object):
             # settings for the legend axis
             for method_label, method_info in self.dummy_data.items():
                 self.plot_at_axis(
-                    idx=self.num_subplots - 1, method_curve_setting=method_info, x_data=0, y_data=0
+                    idx=self.num_subplots - 1,
+                    method_curve_setting=method_info,
+                    x_data=0,
+                    y_data=0,
                 )
             ax = self.axes[self.num_subplots - 1]
             ax.set_axis_off()
-            ax.legend(loc=10, ncol=self.ncol_of_legend, facecolor="white", edgecolor="white")
+            ax.legend(
+                loc=10, ncol=self.ncol_of_legend, facecolor="white", edgecolor="white"
+            )
         else:
             # settings for the legneds of all common subplots.
             for ax in self.axes:
                 # loc=0，自动将位置放在最合适的
-                ax.legend(loc=3, ncol=self.ncol_of_legend, facecolor="white", edgecolor="white")
+                ax.legend(
+                    loc=3,
+                    ncol=self.ncol_of_legend,
+                    facecolor="white",
+                    edgecolor="white",
+                )
 
     def show(self):
         self._plot()

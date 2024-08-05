@@ -32,7 +32,9 @@ def main():
         print(f"[PROCESSING INFORMATION ABOUT DATASET {dataset_name}...]")
         old_methods_info = old_npy.get(dataset_name)
         if not old_methods_info:
-            raise KeyError(f"{old_npy} doesn't contain the information about {dataset_name}.")
+            raise KeyError(
+                f"{old_npy} doesn't contain the information about {dataset_name}."
+            )
 
         print(f"OLD_NPY: {list(old_methods_info.keys())}")
         print(f"NEW_NPY: {list(methods_info.keys())}")

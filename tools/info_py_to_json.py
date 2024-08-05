@@ -32,7 +32,9 @@ def convert_py_to_json(source_config_root, target_config_root):
     source_config_files = os.listdir(source_config_root)
     for source_config_file in source_config_files:
         source_config_path = os.path.join(source_config_root, source_config_file)
-        if not (os.path.isfile(source_config_path) and source_config_path.endswith(".py")):
+        if not (
+            os.path.isfile(source_config_path) and source_config_path.endswith(".py")
+        ):
             continue
         validate_py_syntax(source_config_path)
         print(source_config_path)
@@ -49,7 +51,9 @@ def convert_py_to_json(source_config_root, target_config_root):
         del sys.modules[temp_module_name]
 
         with open(
-            os.path.join(target_config_root, os.path.basename(temp_module_name) + ".json"),
+            os.path.join(
+                target_config_root, os.path.basename(temp_module_name) + ".json"
+            ),
             encoding="utf-8",
             mode="w",
         ) as f:

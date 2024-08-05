@@ -56,11 +56,16 @@ md_names = [
 
 url_list = "\n".join(
     ["<ul>"]
-    + [list_item_template.format(html_name=name, item_name=name.upper()) for name in md_names]
+    + [
+        list_item_template.format(html_name=name, item_name=name.upper())
+        for name in md_names
+    ]
     + ["</ul>"]
 )
 
-index_html = index_template.format(html_title="Index", html_urls=url_list, html_body="Updating...")
+index_html = index_template.format(
+    html_title="Index", html_urls=url_list, html_body="Updating..."
+)
 save_html(html_text=index_html, html_path=os.path.join(html_root, "index.html"))
 
 for md_name in md_names:
@@ -68,5 +73,7 @@ for md_name in md_names:
         os.path.join(md_root, md_name + ".md"),
         extras={"tables": True, "html-classes": {"table": "sortable"}},
     )
-    html = html_template.format(html_title=md_name, html_urls=url_list, html_body=html_body)
+    html = html_template.format(
+        html_title=md_name, html_urls=url_list, html_body=html_body
+    )
     save_html(html_text=html, html_path=os.path.join(html_root, md_name + ".html"))
