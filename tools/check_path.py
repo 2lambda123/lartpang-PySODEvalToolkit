@@ -5,12 +5,22 @@ import json
 import os
 from collections import OrderedDict
 
-parser = argparse.ArgumentParser(description="A simple tool for checking your json config file.")
-parser.add_argument(
-    "-m", "--method-jsons", nargs="+", required=True, help="The json file about all methods."
+parser = argparse.ArgumentParser(
+    description="A simple tool for checking your json config file."
 )
 parser.add_argument(
-    "-d", "--dataset-jsons", nargs="+", required=True, help="The json file about all datasets."
+    "-m",
+    "--method-jsons",
+    nargs="+",
+    required=True,
+    help="The json file about all methods.",
+)
+parser.add_argument(
+    "-d",
+    "--dataset-jsons",
+    nargs="+",
+    required=True,
+    help="The json file about all datasets.",
 )
 args = parser.parse_args()
 
@@ -48,7 +58,9 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
                     if name.startswith(file_prefix) and name.endswith(file_suffix)
                 ]
                 if len(pred_names) == 0:
-                    total_msgs.append(f"{dir_path} 中不包含前缀为{file_prefix}且后缀为{file_suffix}的文件")
+                    total_msgs.append(
+                        f"{dir_path} 中不包含前缀为{file_prefix}且后缀为{file_suffix}的文件"
+                    )
                     continue
 
             mask_names = [

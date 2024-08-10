@@ -88,7 +88,9 @@ def draw_curves(
         our_methods.reverse()
         for x in our_methods:
             if x not in target_unique_method_names:
-                raise ValueError(f"{x} must be contained in\n{target_unique_method_names}")
+                raise ValueError(
+                    f"{x} must be contained in\n{target_unique_method_names}"
+                )
             # Put our methods into the head of the name list
             target_unique_method_names.pop(target_unique_method_names.index(x))
             target_unique_method_names.insert(0, x)
@@ -102,7 +104,9 @@ def draw_curves(
         [
             color
             for name, color in colors.cnames.items()
-            if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
+            if name not in ["red", "white"]
+            or not name.startswith("light")
+            or "gray" in name
         ]
     )
     style_table = ["-", "--", "-.", ":", "."]
@@ -158,26 +162,41 @@ def draw_curves(
                 y_data = method_results.get("p")
                 if y_data is None:
                     y_data = method_results["precision"]
-                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+                assert isinstance(y_data, (list, tuple)), (
+                    method_name,
+                    method_results.keys(),
+                )
 
                 x_data = method_results.get("r")
                 if x_data is None:
                     x_data = method_results["recall"]
-                assert isinstance(x_data, (list, tuple)), (method_name, method_results.keys())
+                assert isinstance(x_data, (list, tuple)), (
+                    method_name,
+                    method_results.keys(),
+                )
             elif mode == "fm":
                 y_data = method_results.get("fm")
                 if y_data is None:
                     y_data = method_results["fmeasure"]
-                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+                assert isinstance(y_data, (list, tuple)), (
+                    method_name,
+                    method_results.keys(),
+                )
 
                 x_data = np.linspace(0, 1, 256)
             elif mode == "em":
                 y_data = method_results["em"]
-                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+                assert isinstance(y_data, (list, tuple)), (
+                    method_name,
+                    method_results.keys(),
+                )
 
                 x_data = np.linspace(0, 1, 256)
 
             curve_drawer.plot_at_axis(
-                idx=idx, method_curve_setting=method_setting, x_data=x_data, y_data=y_data
+                idx=idx,
+                method_curve_setting=method_setting,
+                x_data=x_data,
+                y_data=y_data,
             )
     curve_drawer.save(path=save_name)

@@ -43,7 +43,9 @@ def rename_all_files(src_pattern, dst_pattern, src_name, src_dir, dst_dir=None):
     print(f"开始替换 {src_dir} 中的数据")
     for idx, src_data_path in enumerate(src_data_paths, start=1):
         src_name_w_dir_name = src_data_path[len(src_dir) + 1 :]
-        dst_name_w_dir_name = re.sub(src_pattern, repl=dst_pattern, string=src_name_w_dir_name)
+        dst_name_w_dir_name = re.sub(
+            src_pattern, repl=dst_pattern, string=src_name_w_dir_name
+        )
         if dst_name_w_dir_name == src_name_w_dir_name:
             continue
         dst_data_path = path_join(dst_dir, dst_name_w_dir_name)

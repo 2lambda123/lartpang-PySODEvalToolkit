@@ -97,7 +97,9 @@ class GrayscaleMetricRecorder:
                 metric_handler = BINARY_METRIC_MAPPING[metric_name]
                 self.metric_objs["fmeasurev2"].add_handler(
                     handler_name=metric_name,
-                    metric_handler=metric_handler["handler"](**metric_handler["kwargs"]),
+                    metric_handler=metric_handler["handler"](
+                        **metric_handler["kwargs"]
+                    ),
                 )
 
     def step(self, pre: np.ndarray, gt: np.ndarray, gt_path: str):
@@ -145,7 +147,9 @@ class GrayscaleMetricRecorder:
                     raise NotImplementedError(m_name)
 
         if num_bits is not None and isinstance(num_bits, int):
-            numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
+            numerical_results = {
+                k: v.round(num_bits) for k, v in numerical_results.items()
+            }
         if not return_ndarray:
             sequential_results = ndarray_to_basetype(sequential_results)
             numerical_results = ndarray_to_basetype(numerical_results)
@@ -153,9 +157,13 @@ class GrayscaleMetricRecorder:
 
 
 class BinaryMetricRecorder:
-    suppoted_metrics = sorted([k for k in BINARY_METRIC_MAPPING.keys() if k.startswith("bi")])
+    suppoted_metrics = sorted(
+        [k for k in BINARY_METRIC_MAPPING.keys() if k.startswith("bi")]
+    )
 
-    def __init__(self, metric_names=("bif1", "biprecision", "birecall", "biiou", "bioa")):
+    def __init__(
+        self, metric_names=("bif1", "biprecision", "birecall", "biiou", "bioa")
+    ):
         """
         用于统计各种指标的类
         """
@@ -192,7 +200,9 @@ class BinaryMetricRecorder:
                     numerical_results[_name] = binary_results
 
         if num_bits is not None and isinstance(num_bits, int):
-            numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
+            numerical_results = {
+                k: v.round(num_bits) for k, v in numerical_results.items()
+            }
         if not return_ndarray:
             numerical_results = ndarray_to_basetype(numerical_results)
         return {"numerical": numerical_results}
@@ -200,7 +210,9 @@ class BinaryMetricRecorder:
 
 class GroupedMetricRecorder:
     def __init__(
-        self, group_names=None, metric_names=("sm", "wfm", "mae", "fmeasure", "em", "iou", "dice")
+        self,
+        group_names=None,
+        metric_names=("sm", "wfm", "mae", "fmeasure", "em", "iou", "dice"),
     ):
         self.group_names = group_names
         self.metric_names = metric_names
@@ -225,7 +237,8 @@ class GroupedMetricRecorder:
 
     def show(self, num_bits: int = 3, return_group: bool = False):
         groups_metrics = {
-            n: r.show(num_bits=None, return_ndarray=True) for n, r in self.metric_recorders.items()
+            n: r.show(num_bits=None, return_ndarray=True)
+            for n, r in self.metric_recorders.items()
         }
 
         results = {}  # collect all group metrics into a list
@@ -234,13 +247,17 @@ class GroupedMetricRecorder:
                 # metric_type: sequential and numerical
                 results.setdefault(metric_type, {})
                 for metric_name, metric_array in metric_group.items():
-                    results[metric_type].setdefault(metric_name, []).append(metric_array)
+                    results[metric_type].setdefault(metric_name, []).append(
+                        metric_array
+                    )
 
         numerical_results = {}
         sequential_results = {}
         for metric_type, metric_group in results.items():
             for metric_name, metric_arrays in metric_group.items():
-                metric_array = np.mean(np.vstack(metric_arrays), axis=0)  # average over all groups
+                metric_array = np.mean(
+                    np.vstack(metric_arrays), axis=0
+                )  # average over all groups
 
                 if metric_name in BINARY_METRIC_MAPPING or metric_name == "em":
                     if metric_type == "sequential":
@@ -256,17 +273,24 @@ class GroupedMetricRecorder:
 
         sequential_results = ndarray_to_basetype(sequential_results)
         if not return_group:
-            numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
+            numerical_results = {
+                k: v.round(num_bits) for k, v in numerical_results.items()
+            }
             numerical_results = ndarray_to_basetype(numerical_results)
             numerical_results = self.sort_results(numerical_results)
             return {"sequential": sequential_results, "numerical": numerical_results}
         else:
             group_numerical_results = {}
             for group_name, group_metric in groups_metrics.items():
-                group_metric = {k: v.round(num_bits) for k, v in group_metric["numerical"].items()}
+                group_metric = {
+                    k: v.round(num_bits) for k, v in group_metric["numerical"].items()
+                }
                 group_metric = ndarray_to_basetype(group_metric)
                 group_numerical_results[group_name] = self.sort_results(group_metric)
-            return {"sequential": sequential_results, "numerical": group_numerical_results}
+            return {
+                "sequential": sequential_results,
+                "numerical": group_numerical_results,
+            }
 
     def sort_results(self, results: dict) -> OrderedDict:
         """for a single group of metrics"""
